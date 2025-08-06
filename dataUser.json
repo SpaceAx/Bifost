@@ -1,0 +1,28 @@
+{
+  "data_user": [
+    {
+      "id": "user_1754374528366",
+      "username": "Malas",
+      "password": "malas",
+      "role": "user"
+    },
+    {
+      "id": "user_1754374673773",
+      "username": "123456",
+      "password": "654321",
+      "role": "user"
+    },
+    {
+      "id": "admin",
+      "username": "admin",
+      "password": "654321",
+      "role": "admin"
+    },
+    {
+      "id": "user_1754455166327",
+      "username": "Javas Ganteng",
+      "password": "171007",
+      "role": "user"
+    }
+  ]
+}
