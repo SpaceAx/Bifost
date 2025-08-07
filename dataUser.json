@@ -23,6 +23,12 @@
       "username": "Javas Ganteng",
       "password": "171007",
       "role": "user"
+    },
+    {
+      "id": "user_1754562128656",
+      "username": "65",
+      "password": "12",
+      "role": "user"
     }
   ]
 }
