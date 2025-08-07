@@ -58,7 +58,8 @@
         .editor-wrapper { position: relative; height: calc(100vh - var(--header-height) - var(--toolbar-height) - var(--footer-height)); overflow: auto; background-color: var(--bg-color); }
         .ruler { position: absolute; background-color: var(--primary-color); z-index: 1; overflow: hidden; user-select: none; }
         .ruler.horizontal { top: 0; left: var(--ruler-size); width: calc(100% - var(--ruler-size)); height: var(--ruler-size); border-bottom: 1px solid var(--border-color); }
-        .ruler.vertical { top: var(--ruler-size); left: 0; width: var(--ruler-size); height: calc(100% - var(--ruler-size)); border-right: 1px solid var(--border-color); }
+        /* PERBAIKAN: Menghapus properti 'height' agar bisa diatur dinamis oleh JS */
+        .ruler.vertical { top: var(--ruler-size); left: 0; width: var(--ruler-size); border-right: 1px solid var(--border-color); }
         .ruler-mark { position: absolute; background-color: var(--border-color); }
         .ruler.horizontal .ruler-mark { top: 0; width: 1px; }
         .ruler.vertical .ruler-mark { left: 0; height: 1px; }
@@ -100,9 +101,18 @@
         #notes-list-page .header-logo-group { grid-column: 1 / 2; }
         #notes-list-page .header-actions { grid-column: 3 / 4; }
         .header-search-wrapper { position: relative; grid-column: 2 / 3; max-width: 500px; margin: 0 auto; width: 100%; }
-        .header-search-wrapper i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; z-index: 1; }
+        .header-search-wrapper i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; z-index: 1; transition: transform 0.3s ease; }
         .header-search { background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-color); padding: 0.6rem 1rem 0.6rem 2.75rem; width: 100%; transition: all 0.3s ease-in-out; font-size: 0.9rem; }
-        .header-search:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.25); background-color: var(--primary-color); }
+        /* PERBAIKAN: Animasi zoom pada kotak pencarian */
+        .header-search:focus { 
+            outline: none; border-color: var(--accent-color); 
+            box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.25); 
+            background-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+        .header-search:focus + i {
+            transform: translateY(-50%) scale(1.1);
+        }
         
         .list-main { padding: 1rem 1.5rem; overflow-y: auto; }
         .app-footer { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; height: var(--footer-height); background-color: var(--card-color); border-top: 1px solid var(--border-color); flex-shrink: 0; z-index: 100; }
@@ -119,7 +129,6 @@
         .delete-note-btn:hover { color: var(--danger-color); }
         .notes-filtered .note-item-selector.has-completed-tasks { display: none; }
 
-        /* === LINK POPOVER === */
         .editor-popover {
             position: absolute; background-color: var(--primary-color); border: 1px solid var(--border-color);
             border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); padding: 8px;
@@ -163,15 +172,9 @@
 
     <!-- Auth, App, dan elemen HTML lainnya -->
     <div id="auth-wrapper" class="auth-wrapper" style="display: block;"><div class="auth-container"><div id="login-view" class="form-box"><img src="img/bifost.png" alt="Logo Bifost" class="auth-logo"><h2>Selamat Datang Kembali</h2><p class="form-subtitle">Silakan masuk untuk melanjutkan</p><form id="login-form"><div class="input-group"><label for="username">User ID</label><input type="text" id="username" required="" placeholder="Masukkan User ID Anda"></div><div class="input-group"><label for="password">Password</label><input type="password" id="password" required="" placeholder="••••••••"></div><button type="submit" class="auth-button">Login</button></form><p class="form-footer">Belum punya akun? <a id="show-register">Buat akun baru</a></p></div><div id="register-view" class="form-box" style="display: none;"><img src="img/bifost.png" alt="Logo Bifost" class="auth-logo"><h2>Buat Akun Baru</h2><p class="form-subtitle">Bergabung dengan Kelas XII-B (Bifost)</p><form id="register-form"><div class="input-group"><label for="new-username">User ID</label><input type="text" id="new-username" required="" placeholder="Contoh: user123"></div><div class="input-group"><label for="new-password">Password</label><input type="password" id="new-password" required="" placeholder="••••••••"></div><button type="submit" class="auth-button">Buat Akun</button></form><p class="form-footer">Sudah punya akun? <a id="show-login">Login di sini</a></p></div></div></div>
-    <div id="app-container" class="app-container" style="display: none;"><div id="personal-notes-page" class="app-page active-page"><header class="app-header"><div class="header-logo-group"><img src="img/bifost.png" class="header-logo"><h1>Catatan Pribadi</h1></div><div class="header-actions"><button id="btn-daily-note" class="header-btn" title="Buka Catatan Hari Ini"><i class="fas fa-calendar-day"></i></button><button id="btn-new-note" class="header-btn" title="Catatan Baru"><i class="fas fa-plus"></i></button><button id="save-note-btn" class="header-btn" title="Simpan Catatan"><i class="fas fa-save"></i></button></div></header><div id="personal-toolbar" class="editor-toolbar"></div><main class="editor-main"><div id="personal-editor-wrapper" class="editor-wrapper ruler-active"><div class="ruler horizontal"></div><div class="ruler vertical"></div><div id="note-editor" class="note-editor" contenteditable="true"></div></div></main></div><div id="server-notes-page" class="app-page"><header class="app-header"><div class="header-logo-group"><img src="img/bifost.png" class="header-logo"><h1>Pengumuman Harian</h1></div><div id="server-header-actions" class="header-actions" style="display:none;"><button id="save-server-note-btn" class="header-btn" title="Simpan Catatan Server"><i class="fas fa-save"></i></button></div></header><div id="server-toolbar" class="editor-toolbar" style="display:none;"></div><main class="editor-main"><div id="server-editor-wrapper" class="editor-wrapper"><div class="ruler horizontal"></div><div class="ruler vertical"></div><div id="server-note-content" class="note-editor" contenteditable="false"></div></div></main></div><div id="notes-list-page" class="app-page"><header class="app-header"><div class="header-logo-group"><img src="img/bifost.png" class="header-logo"><h1>Daftar Catatan</h1></div><div class="header-search-wrapper"><i class="fas fa-search"></i><input type="search" id="search-notes-input" class="header-search" placeholder="Cari di dalam catatan..."></div><div class="header-actions"><button id="task-filter-btn" class="header-btn" title="Filter Tugas Belum Selesai"><i class="fas fa-filter"></i></button></div></header><main id="notes-list-container" class="list-main"></main></div><footer class="app-footer"><button class="nav-item active" data-page="personal-notes-page"><i class="fas fa-user-pen"></i><span>Pribadi</span></button><button class="nav-item" data-page="notes-list-page"><i class="fas fa-book"></i><span>Daftar</span></button><button class="nav-item" data-page="server-notes-page"><i class="fas fa-tower-broadcast"></i><span>Pengumuman</span></button><button id="logout-btn-nav" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></button></footer></div>
+    <div id="app-container" class="app-container" style="display: none;"><div id="personal-notes-page" class="app-page active-page"><header class="app-header"><div class="header-logo-group"><img src="img/bifost.png" class="header-logo"><h1>Catatan Pribadi</h1></div><div class="header-actions"><button id="btn-daily-note" class="header-btn" title="Buka Catatan Hari Ini"><i class="fas fa-calendar-day"></i></button><button id="btn-new-note" class="header-btn" title="Catatan Baru"><i class="fas fa-plus"></i></button><button id="save-note-btn" class="header-btn" title="Simpan Catatan"><i class="fas fa-save"></i></button></div></header><div id="personal-toolbar" class="editor-toolbar"></div><main class="editor-main"><div id="personal-editor-wrapper" class="editor-wrapper ruler-active"><div class="ruler horizontal"></div><div class="ruler vertical"></div><div id="note-editor" class="note-editor" contenteditable="true"></div></div></main></div><div id="server-notes-page" class="app-page"><header class="app-header"><div class="header-logo-group"><img src="img/bifost.png" class="header-logo"><h1>Pengumuman Harian</h1></div><div id="server-header-actions" class="header-actions" style="display:none;"><button id="save-server-note-btn" class="header-btn" title="Simpan Catatan Server"><i class="fas fa-save"></i></button></div></header><div id="server-toolbar" class="editor-toolbar" style="display:none;"></div><main class="editor-main"><div id="server-editor-wrapper" class="editor-wrapper"><div class="ruler horizontal"></div><div class="ruler vertical"></div><div id="server-note-content" class="note-editor" contenteditable="false"></div></div></main></div><div id="notes-list-page" class="app-page"><header class="app-header"><div class="header-logo-group"><img src="img/bifost.png" class="header-logo"><h1>Daftar Catatan</h1></div><div class="header-search-wrapper"><input type="search" id="search-notes-input" class="header-search" placeholder="Cari di dalam catatan..."><i class="fas fa-search"></i></div><div class="header-actions"><button id="task-filter-btn" class="header-btn" title="Filter Tugas Belum Selesai"><i class="fas fa-filter"></i></button></div></header><main id="notes-list-container" class="list-main"></main></div><footer class="app-footer"><button class="nav-item active" data-page="personal-notes-page"><i class="fas fa-user-pen"></i><span>Pribadi</span></button><button class="nav-item" data-page="notes-list-page"><i class="fas fa-book"></i><span>Daftar</span></button><button class="nav-item" data-page="server-notes-page"><i class="fas fa-tower-broadcast"></i><span>Pengumuman</span></button><button id="logout-btn-nav" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></button></footer></div>
     
-    <!-- Popover untuk Link Editor -->
-    <div id="link-popover" class="editor-popover" style="display: none;">
-        <input type="text" id="link-url-input" placeholder="Masukkan atau tempel URL">
-        <button id="link-save-btn" title="Simpan"><i class="fas fa-check"></i></button>
-        <button id="link-remove-btn" title="Hapus Tautan"><i class="fas fa-unlink"></i></button>
-    </div>
-
+    <div id="link-popover" class="editor-popover" style="display: none;"><input type="text" id="link-url-input" placeholder="Masukkan atau tempel URL"><button id="link-save-btn" title="Simpan"><i class="fas fa-check"></i></button><button id="link-remove-btn" title="Hapus Tautan"><i class="fas fa-unlink"></i></button></div>
     <div id="custom-confirm-dialog" class="custom-dialog-overlay"></div><div id="loading-overlay" class="loading-overlay"><div class="loading-spinner"></div></div><div id="toast-container"></div><input type="file" id="image-input" accept="image/*" style="display: none;"><input type="file" id="server-image-input" accept="image/*" style="display: none;">
 
     <!-- =================================================================
@@ -180,13 +183,22 @@
     <script>
     //<![CDATA[
     
-    // ================== KODE DARI: api.js ==================
-    const MASTER_KEY = '$2a$10$okx9jFMKaWaF4KfhN9ebR.n35jpcrw2UL4sEu.OOTYQTdg/mQb.K6';
-    const ACCESS_KEY = '$2a$10$7pRgxTu4LqvfRNJpqPLZ0OILN3TwWgTB7tuA0KGUO3nKnBFFPIJzW';
-    const DATA_USER_BIN_ID = '687df0042d1dfe3c2c759ad6';
-    const USER_NOTES_BIN_ID = '687df13fd1981e22d1897e69';
-    const SERVER_NOTES_BIN_ID = '6891ae4e7b4b8670d8ad885d';
-    const JSONBIN_API_URL = 'https://api.jsonbin.io/v3/b/';
+    // ================== PENGGANTIAN API ke GITHUB ==================
+    const GITHUB_TOKEN = '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';
+    const GITHUB_OWNER = 'SpaceAx';
+    const GITHUB_REPO = 'Bifost';
+
+    const DATA_USER_FILE_ID = 'dataUser';
+    const USER_NOTES_FILE_ID = 'userNotes';
+    const SERVER_NOTES_FILE_ID = 'serverNotes';
+
+    const FILE_PATHS = {
+        [DATA_USER_FILE_ID]: 'dataUser.json',
+        [USER_NOTES_FILE_ID]: 'user.json',
+        [SERVER_NOTES_FILE_ID]: 'serverDataNote.json'
+    };
+    
+    let fileShas = {};
 
     const loadingOverlay = document.getElementById('loading-overlay');
     const showLoading = (show) => { if (loadingOverlay) loadingOverlay.style.display = show ? 'flex' : 'none'; };
@@ -209,47 +221,82 @@
         });
     }
 
-    async function readBin(binId) {
+    async function readFile(fileId) {
+        const filePath = FILE_PATHS[fileId];
+        if (!filePath) { showToast(`Error: ID file tidak dikenal '${fileId}'`, 'error'); return null; }
         showLoading(true);
         try {
-            const response = await fetch(`${JSONBIN_API_URL}${binId}/latest`, { headers: { 'X-Master-Key': MASTER_KEY, 'X-Access-Key': ACCESS_KEY } });
-            if (response.status === 404) return {};
-            if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            return (await response.json()).record || {};
-        } catch (error) { showToast(`Gagal membaca data: ${error.message}`, 'error'); return {}; } finally { showLoading(false); }
+            const res = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`, {
+                headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+            });
+            if (!res.ok) {
+                if (res.status === 404) { showToast(`File ${filePath} tidak ditemukan di repo.`, 'error'); return {}; }
+                throw new Error(`Gagal memuat file: ${res.status} ${res.statusText}`);
+            }
+            const data = await res.json();
+            fileShas[filePath] = data.sha;
+            const content = atob(data.content.replace(/\n/g, ''));
+            return JSON.parse(content);
+        } catch (error) {
+            showToast(`Gagal membaca data dari GitHub: ${error.message}`, 'error');
+            return null;
+        } finally {
+            showLoading(false);
+        }
     }
 
-    async function updateBin(binId, data) {
+    async function updateFile(fileId, data) {
+        const filePath = FILE_PATHS[fileId];
+        if (!filePath) { showToast(`Error: ID file tidak dikenal '${fileId}'`, 'error'); return null; }
+        const sha = fileShas[filePath];
+        if (!sha) { showToast(`Tidak bisa menyimpan ${filePath} karena belum dimuat. Muat ulang halaman.`, 'error'); return null; }
         showLoading(true);
         try {
-            const response = await fetch(`${JSONBIN_API_URL}${binId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY }, body: JSON.stringify(data) });
-            if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.message || `HTTP ${response.status}`); }
-            return await response.json();
-        } catch (error) { showToast(`Gagal menyimpan data: ${error.message}`, 'error'); return null; } finally { showLoading(false); }
+            const contentRaw = JSON.stringify(data, null, 2);
+            const encodedContent = btoa(unescape(encodeURIComponent(contentRaw)));
+            const body = { message: `Update ${filePath} from app`, content: encodedContent, sha: sha };
+            const res = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) { throw new Error(`Gagal menyimpan file: ${res.status} ${res.statusText}`); }
+            const responseData = await res.json();
+            fileShas[filePath] = responseData.content.sha;
+            return responseData;
+        } catch (error) {
+            showToast(`Gagal menyimpan data ke GitHub: ${error.message}`, 'error');
+            return null;
+        } finally {
+            showLoading(false);
+        }
     }
 
-    // ================== KODE DARI: notes.js ==================
+    // ================== KODE APLIKASI UTAMA (notes.js, dll) ==================
     let currentEditingNoteId = null;
     let userNotesCache = [];
     let loggedInUser = null;
     
-    class EditorHistory {
-        constructor(editorElement) { this.editor = editorElement; this.undoStack = []; this.redoStack = []; this.init(); }
-        init() { this.undoStack = [this.editor.innerHTML]; this.redoStack = []; }
-        pushState() { if (this.undoStack[this.undoStack.length - 1] !== this.editor.innerHTML) { this.undoStack.push(this.editor.innerHTML); this.redoStack = []; } }
-        undo() { if (this.undoStack.length > 1) { this.redoStack.push(this.undoStack.pop()); this.editor.innerHTML = this.undoStack[this.undoStack.length - 1]; } }
-        redo() { if (this.redoStack.length > 0) { const state = this.redoStack.pop(); this.undoStack.push(state); this.editor.innerHTML = state; } }
-    }
+    class EditorHistory { /* ... (tidak berubah) ... */
+        constructor(editorElement){this.editor=editorElement;this.undoStack=[];this.redoStack=[];this.init()}init(){this.undoStack=[this.editor.innerHTML];this.redoStack=[]}pushState(){if(this.undoStack[this.undoStack.length-1]!==this.editor.innerHTML){this.undoStack.push(this.editor.innerHTML);this.redoStack=[]}}undo(){if(this.undoStack.length>1){this.redoStack.push(this.undoStack.pop());this.editor.innerHTML=this.undoStack[this.undoStack.length-1]}}redo(){if(this.redoStack.length>0){const state=this.redoStack.pop();this.undoStack.push(state);this.editor.innerHTML=state}}}
 
-    const debounce = (func, delay) => { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), delay); }; };
+    const debounce = (func, delay) => { /* ... (tidak berubah) ... */
+        let timeout;return(...args)=>{clearTimeout(timeout);timeout=setTimeout(()=>func.apply(this,args),delay)}};
     
+    // PERBAIKAN: Fungsi generateRuler sekarang mengatur tinggi elemen ruler secara dinamis.
     function generateRuler(editorWrapper) {
-        const horizontalRuler = editorWrapper.querySelector('.ruler.horizontal'); const verticalRuler = editorWrapper.querySelector('.ruler.vertical');
+        const horizontalRuler = editorWrapper.querySelector('.ruler.horizontal');
+        const verticalRuler = editorWrapper.querySelector('.ruler.vertical');
         if (!horizontalRuler || !verticalRuler) return;
-        horizontalRuler.innerHTML = ''; verticalRuler.innerHTML = '';
+        horizontalRuler.innerHTML = '';
+        verticalRuler.innerHTML = '';
         const noteEditor = editorWrapper.querySelector('.note-editor');
-        const editorWidth = noteEditor.scrollWidth; const editorHeight = noteEditor.scrollHeight;
+        const editorWidth = noteEditor.scrollWidth;
+        const editorHeight = noteEditor.scrollHeight;
         
+        // Mengatur tinggi elemen penggaris vertikal agar sama dengan tinggi konten
+        verticalRuler.style.height = `${editorHeight}px`;
+
         for (let i = 0; i < editorWidth; i += 10) {
             if (i % 50 === 0) {
                 const mark = document.createElement('div'); mark.className = 'ruler-mark';
@@ -269,192 +316,40 @@
     }
 
     function initializeEditor(editorElement, toolbarElement, imageInputElement, history) {
-        // PERBAIKAN LINK: Variabel untuk popover dan status
-        let savedRange = null;
-        const linkPopover = document.getElementById('link-popover');
-        const linkUrlInput = document.getElementById('link-url-input');
-        const linkSaveBtn = document.getElementById('link-save-btn');
-        const linkRemoveBtn = document.getElementById('link-remove-btn');
-        
-        const buildToolbar = () => {
-            const tools = [
-                { id: 'undo', icon: 'fa-undo', title: 'Urungkan' }, { id: 'redo', icon: 'fa-redo', title: 'Ulangi' }, { type: 'separator' },
-                { id: 'removeFormat', icon: 'fa-eraser', title: 'Hapus Format' }, { type: 'separator' },
-                { id: 'formatBlock-H1', value: 'H1', icon: 'fa-heading', title: 'Judul 1' }, { id: 'formatBlock-H2', value: 'H2', icon: 'fa-heading', title: 'Judul 2' }, { id: 'formatBlock-P', value: 'P', icon: 'fa-paragraph', title: 'Paragraf' },
-                { id: 'formatBlock-BLOCKQUOTE', value: 'BLOCKQUOTE', icon: 'fa-quote-left', title: 'Kutipan' }, { type: 'separator' },
-                { id: 'bold', icon: 'fa-bold', title: 'Tebal' }, { id: 'italic', icon: 'fa-italic', title: 'Miring' }, { id: 'underline', icon: 'fa-underline', title: 'Garis Bawah' }, { id: 'strikethrough', icon: 'fa-strikethrough', title: 'Coret' },
-                { id: 'superscript', icon: 'fa-superscript', title: 'Superscript' }, { id: 'subscript', icon: 'fa-subscript', title: 'Subscript' }, { type: 'separator' },
-                { id: 'foreColor', icon: 'fa-palette', type: 'color', title: 'Warna Teks' }, { id: 'backColor', icon: 'fa-highlighter', type: 'color', title: 'Stabilo' }, { type: 'separator' },
-                { id: 'justifyLeft', icon: 'fa-align-left', title: 'Rata Kiri' }, { id: 'justifyCenter', icon: 'fa-align-center', title: 'Rata Tengah' }, { id: 'justifyRight', icon: 'fa-align-right', title: 'Rata Kanan' }, { type: 'separator' },
-                { id: 'insertUnorderedList', icon: 'fa-list-ul', title: 'Daftar Poin' }, { id: 'insertOrderedList', icon: 'fa-list-ol', title: 'Daftar Angka' }, { id: 'wrapAsTask', icon: 'fa-check-square', title: 'Daftar Tugas' },
-                { id: 'indent', icon: 'fa-indent', title: 'Tambah Indentasi' }, { id: 'outdent', icon: 'fa-outdent', title: 'Kurangi Indentasi' }, { type: 'separator' },
-                { id: 'createLink', icon: 'fa-link', title: 'Buat/Ubah Tautan' }, { id: 'insertHorizontalRule', icon: 'fa-minus', title: 'Garis Horizontal' }, { id: 'image', icon: 'fa-image', title: 'Sisipkan Gambar' },
-            ];
-            toolbarElement.innerHTML = '';
-            tools.forEach(tool => {
-                if (tool.type === 'separator') { toolbarElement.innerHTML += '<div class="toolbar-separator"></div>'; return; }
-                if (tool.type === 'color') {
-                    const wrapper = document.createElement('div'); wrapper.className = 'color-picker-wrapper'; wrapper.title = tool.title;
-                    wrapper.innerHTML = `<i class="fas ${tool.icon}"></i><input type="color">`;
-                    const colorInput = wrapper.querySelector('input'); colorInput.addEventListener('input', () => executeCommand(tool.id, colorInput.value));
-                    toolbarElement.appendChild(wrapper);
-                } else {
-                    const button = document.createElement('button'); button.title = tool.title; button.dataset.command = tool.id.split('-')[0];
-                    if (tool.value) button.dataset.value = tool.value;
-                    let content = `<i class="fas ${tool.icon}"></i>`;
-                    if (tool.value && tool.id.includes('formatBlock') && tool.value.startsWith('H')) { content += `<span style="font-size: 0.7em; margin-left:2px; font-weight: 600;">${tool.value.replace('H', '')}</span>`; }
-                    button.innerHTML = content; toolbarElement.appendChild(button);
-                }
-            });
-        };
-        buildToolbar();
-
-        const executeCommand = (command, value = null) => { document.execCommand(command, false, value); history.pushState(); editorElement.focus(); };
-        
-        // PERBAIKAN LINK: Fungsi-fungsi helper untuk popover
-        const getSelectionLink = () => {
-            if (window.getSelection().rangeCount === 0) return null;
-            let node = window.getSelection().getRangeAt(0).startContainer;
-            node = node.nodeType === 3 ? node.parentNode : node;
-            return node.closest('a');
-        };
-        const hideLinkPopover = () => { linkPopover.style.display = 'none'; savedRange = null; };
-        const showLinkPopover = (targetButton) => {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) savedRange = selection.getRangeAt(0).cloneRange();
-            
-            const rect = targetButton.getBoundingClientRect();
-            linkPopover.style.display = 'flex';
-            linkPopover.style.top = `${rect.bottom + 8}px`;
-            linkPopover.style.left = `${Math.max(8, rect.left + rect.width / 2 - linkPopover.offsetWidth / 2)}px`;
-
-            const existingLink = getSelectionLink();
-            if (existingLink) {
-                linkUrlInput.value = existingLink.getAttribute('href');
-                linkRemoveBtn.style.display = 'flex';
-            } else {
-                linkUrlInput.value = '';
-                linkRemoveBtn.style.display = 'none';
-            }
-            linkUrlInput.focus();
-        };
-
-        toolbarElement.addEventListener('click', e => {
-            const button = e.target.closest('button'); if (!button) return;
-            const { command, value } = button.dataset;
-
-            // PERBAIKAN LINK: Ganti `prompt` dengan popover
-            if (command === 'createLink') { showLinkPopover(button); }
-            else if (command === 'image') { imageInputElement.click(); }
-            else if (command === 'undo') { history.undo(); }
-            else if (command === 'redo') { history.redo(); }
-            else if (command === 'wrapAsTask') {
-                const selection = window.getSelection(); if (!selection.rangeCount || selection.isCollapsed) return showToast('Pilih teks terlebih dahulu!', 'error');
-                const range = selection.getRangeAt(0);
-                if (range.startContainer.parentElement.closest('.task-item')) return showToast('Tidak bisa membuat tugas di dalam tugas lain.', 'error');
-                const content = range.extractContents(); const taskItem = document.createElement('div');
-                taskItem.className = 'task-item'; const checkbox = document.createElement('div');
-                checkbox.className = 'task-item-checkbox'; checkbox.innerHTML = '<i class="fas fa-check"></i>';
-                const textSpan = document.createElement('span'); textSpan.className = 'task-item-content';
-                textSpan.setAttribute('contenteditable', 'true'); textSpan.appendChild(content);
-                taskItem.appendChild(checkbox); taskItem.appendChild(textSpan); range.insertNode(taskItem);
-                history.pushState();
-            } else executeCommand(command, value);
-        });
-
-        // PERBAIKAN LINK: Event listener untuk tombol di popover
-        linkSaveBtn.addEventListener('click', () => {
-            if (!savedRange) return;
-            const selection = window.getSelection();
-            selection.removeAllRanges(); selection.addRange(savedRange);
-            let url = linkUrlInput.value.trim();
-            if (url) {
-                if (!/^(https?:\/\/|mailto:|tel:)/i.test(url)) url = 'https://' + url;
-                executeCommand('createLink', url);
-            }
-            hideLinkPopover();
-        });
-        linkRemoveBtn.addEventListener('click', () => {
-            if (!savedRange) return;
-            const selection = window.getSelection();
-            selection.removeAllRanges(); selection.addRange(savedRange);
-            executeCommand('unlink');
-            hideLinkPopover();
-        });
-        document.addEventListener('click', (e) => {
-            if (linkPopover.style.display === 'flex' && !linkPopover.contains(e.target) && !e.target.closest('[data-command="createLink"]')) {
-                hideLinkPopover();
-            }
-        });
-        
-        imageInputElement.addEventListener('change', e => {
-            const file = e.target.files[0]; if (!file) return; editorElement.focus();
-            const reader = new FileReader();
-            reader.onload = event => {
-                const img = new Image(); img.src = event.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas'); let { width, height } = img;
-                    const MAX_WIDTH = 800, QUALITY = 0.7;
-                    if (width > MAX_WIDTH) { height = (MAX_WIDTH / width) * height; width = MAX_WIDTH; }
-                    canvas.width = width; canvas.height = height; canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-                    executeCommand('insertHTML', `<p style="text-align: center;"><img src="${canvas.toDataURL('image/jpeg', QUALITY)}"></p>`);
-                };
-            };
-            reader.readAsDataURL(file); e.target.value = '';
-        });
-        
-        editorElement.addEventListener('click', e => { if (e.target.classList.contains('task-item-checkbox')) { e.target.parentElement.classList.toggle('completed'); history.pushState(); } });
-        
-        editorElement.addEventListener('keydown', e => {
-            const selection = window.getSelection();
-            if (!selection.rangeCount || !selection.isCollapsed) return;
-            if (e.key === 'Backspace') {
-                const range = selection.getRangeAt(0); const container = range.startContainer;
-                const taskContent = (container.nodeType === 3 ? container.parentElement : container).closest('.task-item-content');
-                if (taskContent) {
-                    const startRange = document.createRange(); startRange.selectNodeContents(taskContent);
-                    startRange.collapse(true);
-                    if (range.compareBoundaryPoints(Range.START_TO_START, startRange) === 0) {
-                        const taskItem = taskContent.closest('.task-item');
-                        if (taskItem) { e.preventDefault(); taskItem.remove(); history.pushState(); }
-                    }
-                }
-            }
-        });
-
-        editorElement.addEventListener('keyup', debounce(() => history.pushState(), 500));
-        
-        const updateToolbarState = () => {
-            toolbarElement.querySelectorAll('button').forEach(btn => {
-                try {
-                    const { command } = btn.dataset;
-                    let isActive = false;
-                    // PERBAIKAN LINK: Buat tombol aktif jika di dalam tautan
-                    if (command === 'createLink') isActive = !!getSelectionLink();
-                    else if (command && !command.includes('formatBlock')) isActive = document.queryCommandState(command);
-                    if (isActive) btn.classList.add('active'); else btn.classList.remove('active');
-                } catch (error) { btn.classList.remove('active'); }
-            });
-        };
-        document.addEventListener('selectionchange', () => { if (document.activeElement === editorElement) updateToolbarState(); });
+        // ... (Fungsi ini tidak berubah, fungsionalitas popover link sudah ada)
+        let savedRange = null; const linkPopover = document.getElementById('link-popover'); const linkUrlInput = document.getElementById('link-url-input'); const linkSaveBtn = document.getElementById('link-save-btn'); const linkRemoveBtn = document.getElementById('link-remove-btn');
+        const buildToolbar=()=>{const tools=[{id:"undo",icon:"fa-undo",title:"Urungkan"},{id:"redo",icon:"fa-redo",title:"Ulangi"},{type:"separator"},{id:"removeFormat",icon:"fa-eraser",title:"Hapus Format"},{type:"separator"},{id:"formatBlock-H1",value:"H1",icon:"fa-heading",title:"Judul 1"},{id:"formatBlock-H2",value:"H2",icon:"fa-heading",title:"Judul 2"},{id:"formatBlock-P",value:"P",icon:"fa-paragraph",title:"Paragraf"},{id:"formatBlock-BLOCKQUOTE",value:"BLOCKQUOTE",icon:"fa-quote-left",title:"Kutipan"},{type:"separator"},{id:"bold",icon:"fa-bold",title:"Tebal"},{id:"italic",icon:"fa-italic",title:"Miring"},{id:"underline",icon:"fa-underline",title:"Garis Bawah"},{id:"strikethrough",icon:"fa-strikethrough",title:"Coret"},{id:"superscript",icon:"fa-superscript",title:"Superscript"},{id:"subscript",icon:"fa-subscript",title:"Subscript"},{type:"separator"},{id:"foreColor",icon:"fa-palette",type:"color",title:"Warna Teks"},{id:"backColor",icon:"fa-highlighter",type:"color",title:"Stabilo"},{type:"separator"},{id:"justifyLeft",icon:"fa-align-left",title:"Rata Kiri"},{id:"justifyCenter",icon:"fa-align-center",title:"Rata Tengah"},{id:"justifyRight",icon:"fa-align-right",title:"Rata Kanan"},{type:"separator"},{id:"insertUnorderedList",icon:"fa-list-ul",title:"Daftar Poin"},{id:"insertOrderedList",icon:"fa-list-ol",title:"Daftar Angka"},{id:"wrapAsTask",icon:"fa-check-square",title:"Daftar Tugas"},{id:"indent",icon:"fa-indent",title:"Tambah Indentasi"},{id:"outdent",icon:"fa-outdent",title:"Kurangi Indentasi"},{type:"separator"},{id:"createLink",icon:"fa-link",title:"Buat/Ubah Tautan"},{id:"insertHorizontalRule",icon:"fa-minus",title:"Garis Horizontal"},{id:"image",icon:"fa-image",title:"Sisipkan Gambar"}];toolbarElement.innerHTML="";tools.forEach(tool=>{if(tool.type==="separator"){toolbarElement.innerHTML+='<div class="toolbar-separator"></div>';return}
+        if(tool.type==="color"){const wrapper=document.createElement("div");wrapper.className="color-picker-wrapper";wrapper.title=tool.title;wrapper.innerHTML=`<i class="fas ${tool.icon}"></i><input type="color">`;const colorInput=wrapper.querySelector("input");colorInput.addEventListener("input",()=>executeCommand(tool.id,colorInput.value));toolbarElement.appendChild(wrapper)}else{const button=document.createElement("button");button.title=tool.title;button.dataset.command=tool.id.split("-")[0];if(tool.value)
+        button.dataset.value=tool.value;let content=`<i class="fas ${tool.icon}"></i>`;if(tool.value&&tool.id.includes("formatBlock")&&tool.value.startsWith("H")){content+=`<span style="font-size: 0.7em; margin-left:2px; font-weight: 600;">${tool.value.replace("H","")}</span>`}
+        button.innerHTML=content;toolbarElement.appendChild(button)}})};buildToolbar();
+        const executeCommand=(command,value=null)=>{document.execCommand(command,false,value);history.pushState();editorElement.focus()};
+        const getSelectionLink=()=>{if(window.getSelection().rangeCount===0)return null;let node=window.getSelection().getRangeAt(0).startContainer;node=node.nodeType===3?node.parentNode:node;return node.closest("a")};
+        const hideLinkPopover=()=>{linkPopover.style.display="none";savedRange=null};
+        const showLinkPopover=targetButton=>{const selection=window.getSelection();if(selection.rangeCount>0)savedRange=selection.getRangeAt(0).cloneRange();const rect=targetButton.getBoundingClientRect();linkPopover.style.display="flex";linkPopover.style.top=`${rect.bottom+8}px`;linkPopover.style.left=`${Math.max(8,rect.left+rect.width/2-linkPopover.offsetWidth/2)}px`;const existingLink=getSelectionLink();if(existingLink){linkUrlInput.value=existingLink.getAttribute("href");linkRemoveBtn.style.display="flex"}else{linkUrlInput.value="";linkRemoveBtn.style.display="none"}
+        linkUrlInput.focus()};toolbarElement.addEventListener("click",e=>{const button=e.target.closest("button");if(!button)return;const{command,value}=button.dataset;if(command==="createLink"){showLinkPopover(button)}else if(command==="image"){imageInputElement.click()}else if(command==="undo"){history.undo()}else if(command==="redo"){history.redo()}else if(command==="wrapAsTask"){const selection=window.getSelection();if(!selection.rangeCount||selection.isCollapsed)return showToast("Pilih teks terlebih dahulu!","error");const range=selection.getRangeAt(0);if(range.startContainer.parentElement.closest(".task-item"))return showToast("Tidak bisa membuat tugas di dalam tugas lain.","error");const content=range.extractContents();const taskItem=document.createElement("div");taskItem.className="task-item";const checkbox=document.createElement("div");checkbox.className="task-item-checkbox";checkbox.innerHTML='<i class="fas fa-check"></i>';const textSpan=document.createElement("span");textSpan.className="task-item-content";textSpan.setAttribute("contenteditable","true");textSpan.appendChild(content);taskItem.appendChild(checkbox);taskItem.appendChild(textSpan);range.insertNode(taskItem);history.pushState()}else executeCommand(command,value)});
+        linkSaveBtn.addEventListener("click",()=>{if(!savedRange)return;const selection=window.getSelection();selection.removeAllRanges();selection.addRange(savedRange);let url=linkUrlInput.value.trim();if(url){if(!/^(https?:\/\/|mailto:|tel:)/i.test(url))url="https://"+url;executeCommand("createLink",url)}
+        hideLinkPopover()});linkRemoveBtn.addEventListener("click",()=>{if(!savedRange)return;const selection=window.getSelection();selection.removeAllRanges();selection.addRange(savedRange);executeCommand("unlink");hideLinkPopover()});document.addEventListener("click",e=>{if(linkPopover.style.display==="flex"&&!linkPopover.contains(e.target)&&!e.target.closest('[data-command="createLink"]')){hideLinkPopover()}});
+        imageInputElement.addEventListener("change",e=>{const file=e.target.files[0];if(!file)return;editorElement.focus();const reader=new FileReader;reader.onload=event=>{const img=new Image;img.src=event.target.result;img.onload=()=>{const canvas=document.createElement("canvas");let{width,height}=img;const MAX_WIDTH=800,QUALITY=.7;if(width>MAX_WIDTH){height=MAX_WIDTH/width*height;width=MAX_WIDTH}
+        canvas.width=width;canvas.height=height;canvas.getContext("2d").drawImage(img,0,0,width,height);executeCommand("insertHTML",`<p style="text-align: center;"><img src="${canvas.toDataURL("image/jpeg",QUALITY)}"></p>`)}};reader.readAsDataURL(file);e.target.value=""});
+        editorElement.addEventListener("click",e=>{if(e.target.classList.contains("task-item-checkbox")){e.target.parentElement.classList.toggle("completed");history.pushState()}});
+        editorElement.addEventListener("keydown",e=>{const selection=window.getSelection();if(!selection.rangeCount||!selection.isCollapsed)return;if(e.key==="Backspace"){const range=selection.getRangeAt(0);const container=range.startContainer;const taskContent=(container.nodeType===3?container.parentElement:container).closest(".task-item-content");if(taskContent){const startRange=document.createRange();startRange.selectNodeContents(taskContent);startRange.collapse(true);if(range.compareBoundaryPoints(Range.START_TO_START,startRange)===0){const taskItem=taskContent.closest(".task-item");if(taskItem){e.preventDefault();taskItem.remove();history.pushState()}}}}});
+        editorElement.addEventListener("keyup",debounce(()=>history.pushState(),500));
+        const updateToolbarState=()=>{toolbarElement.querySelectorAll("button").forEach(btn=>{try{const{command}=btn.dataset;let isActive=false;if(command==="createLink")isActive=!!getSelectionLink();else if(command&&!command.includes("formatBlock"))isActive=document.queryCommandState(command);if(isActive)btn.classList.add("active");else btn.classList.remove("active")}catch(error){btn.classList.remove("active")}})};
+        document.addEventListener("selectionchange",()=>{if(document.activeElement===editorElement)updateToolbarState()});
     }
-    
-    function filterAndRenderNotesList() {
+
+    function filterAndRenderNotesList() { /* ... (tidak berubah) ... */
         const container = document.getElementById('notes-list-container');
         const searchInput = document.getElementById('search-notes-input');
         const searchText = searchInput.value.toLowerCase();
-        
         container.innerHTML = '';
         if (userNotesCache.length === 0) { container.innerHTML = '<p style="text-align:center; color: var(--text-muted); padding-top: 2rem;">Mulai buat catatan pertamamu!</p>'; return; }
-
         const filteredNotes = userNotesCache.filter(note => {
             const tempDiv = document.createElement('div'); tempDiv.innerHTML = note.content;
             const noteText = tempDiv.textContent.toLowerCase();
             return noteText.includes(searchText);
         });
-
         if (filteredNotes.length === 0) { container.innerHTML = '<p style="text-align:center; color: var(--text-muted); padding-top: 2rem;">Tidak ada catatan yang cocok dengan pencarian.</p>'; return; }
-
         filteredNotes.forEach(note => {
             const div = document.createElement('div'); div.innerHTML = note.content;
             const hasCompletedTasks = div.querySelector('.task-item.completed') !== null;
@@ -462,223 +357,75 @@
             const item = document.createElement('div'); item.className = 'note-item-selector';
             if (hasCompletedTasks) item.classList.add('has-completed-tasks');
             item.dataset.noteId = note.id;
-
             const highlightedTitle = searchText ? titleText.replace(new RegExp(searchText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi'), match => `<mark>${match}</mark>`) : titleText;
             item.innerHTML = `<span class="title">${highlightedTitle}</span><button class="delete-note-btn" title="Hapus"><i class="fas fa-trash"></i></button>`;
             container.appendChild(item);
         });
     }
 
-    async function loadNotesList() {
+    async function loadNotesList() { /* ... (fungsi ini dan di bawahnya sudah disesuaikan dengan API GitHub) ... */
         if (!loggedInUser) return;
-        const db = await readBin(USER_NOTES_BIN_ID);
+        const db = await readFile(USER_NOTES_FILE_ID);
+        if (!db) return;
         const userEntry = (db.user || []).find(u => u.userId === loggedInUser.id);
         userNotesCache = userEntry ? userEntry.notes : [];
         userNotesCache.sort((a, b) => parseInt(b.id.split('_')[1] || 0) - parseInt(a.id.split('_')[1] || 0));
         filterAndRenderNotesList();
     }
-
     async function loadNoteContent(noteId, editorElement, history) {
         const note = (userNotesCache || []).find(n => n.id === noteId);
         if (note) { editorElement.innerHTML = note.content; currentEditingNoteId = note.id; history.init(); generateRuler(editorElement.parentElement); }
     }
-
     async function savePersonalNote() {
         const content = document.getElementById('note-editor').innerHTML.trim();
         if (!content) return showToast('Catatan tidak boleh kosong!', 'error');
-        const db = await readBin(USER_NOTES_BIN_ID);
+        const db = await readFile(USER_NOTES_FILE_ID);
+        if (!db) return;
         const allUserNotes = db.user || [];
         let userNotesEntry = allUserNotes.find(u => u.userId === loggedInUser.id);
         if (!userNotesEntry) { userNotesEntry = { userId: loggedInUser.id, notes: [] }; allUserNotes.push(userNotesEntry); }
         const noteIndex = userNotesEntry.notes.findIndex(n => n.id === currentEditingNoteId);
         if (noteIndex > -1) { userNotesEntry.notes[noteIndex].content = content; }
         else { const newNote = { id: `note_${Date.now()}`, content }; userNotesEntry.notes.push(newNote); currentEditingNoteId = newNote.id; }
-        const result = await updateBin(USER_NOTES_BIN_ID, { user: allUserNotes });
+        const result = await updateFile(USER_NOTES_FILE_ID, { user: allUserNotes });
         if (result) { showToast('Catatan berhasil disimpan!'); await loadNotesList(); }
     }
-
     async function deleteNote(noteId) {
         if (!(await showConfirm('Hapus Catatan', 'Apakah Anda yakin ingin menghapus catatan ini secara permanen?'))) return;
-        const db = await readBin(USER_NOTES_BIN_ID);
+        const db = await readFile(USER_NOTES_FILE_ID);
+        if (!db) return;
         let userNotesEntry = (db.user || []).find(u => u.userId === loggedInUser.id);
         if (userNotesEntry) {
             userNotesEntry.notes = userNotesEntry.notes.filter(n => n.id !== noteId);
-            const result = await updateBin(USER_NOTES_BIN_ID, { user: db.user });
+            const result = await updateFile(USER_NOTES_FILE_ID, { user: db.user });
             if (result) { showToast('Catatan dihapus.'); if (currentEditingNoteId === noteId) document.getElementById('btn-new-note').click(); await loadNotesList(); }
         }
     }
-
     async function loadServerNote(history) {
-        const db = await readBin(SERVER_NOTES_BIN_ID);
+        const db = await readFile(SERVER_NOTES_FILE_ID);
+        if (!db) return;
         const content = db.server_data_note || "";
         const serverNoteContainer = document.getElementById('server-note-content');
         serverNoteContainer.innerHTML = content;
         if (loggedInUser.role === 'admin' && history) { history.init(); generateRuler(serverNoteContainer.parentElement); }
     }
-
     async function saveServerNote() {
         const content = document.getElementById('server-note-content').innerHTML.trim();
-        const result = await updateBin(SERVER_NOTES_BIN_ID, { server_data_note: content });
+        const result = await updateFile(SERVER_NOTES_FILE_ID, { server_data_note: content });
         if (result) showToast('Pengumuman Harian berhasil diperbarui!');
     }
 
-    function initializeApp() {
-        loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-        if (!loggedInUser) return;
-
-        const personalEditor = document.getElementById('note-editor');
-        const personalToolbar = document.getElementById('personal-toolbar');
-        const personalImageInput = document.getElementById('image-input');
-        const personalHistory = new EditorHistory(personalEditor);
-        initializeEditor(personalEditor, personalToolbar, personalImageInput, personalHistory);
-        
-        const personalEditorWrapper = document.getElementById('personal-editor-wrapper');
-        const debouncedPersonalRulerUpdate = debounce(() => generateRuler(personalEditorWrapper), 150);
-        const personalResizeObserver = new ResizeObserver(debouncedPersonalRulerUpdate);
-        personalResizeObserver.observe(personalEditor);
-        debouncedPersonalRulerUpdate();
-
-        const serverEditor = document.getElementById('server-note-content');
-        let serverHistory = null;
-        if (loggedInUser.role === 'admin') {
-            const serverToolbar = document.getElementById('server-toolbar');
-            const serverImageInput = document.getElementById('server-image-input');
-            serverHistory = new EditorHistory(serverEditor);
-            initializeEditor(serverEditor, serverToolbar, serverImageInput, serverHistory);
-            document.getElementById('save-server-note-btn').addEventListener('click', saveServerNote);
-            const serverEditorWrapper = document.getElementById('server-editor-wrapper');
-            const debouncedServerRulerUpdate = debounce(() => generateRuler(serverEditorWrapper), 150);
-            const serverResizeObserver = new ResizeObserver(debouncedServerRulerUpdate);
-            serverResizeObserver.observe(serverEditor);
-        }
-
-        document.getElementById('save-note-btn').addEventListener('click', savePersonalNote);
-        document.getElementById('btn-new-note').addEventListener('click', () => {
-            currentEditingNoteId = null; personalEditor.innerHTML = '';
-            personalHistory.init(); personalEditor.focus();
-            generateRuler(personalEditorWrapper);
-        });
-        
-        document.getElementById('notes-list-container').addEventListener('click', e => {
-            const item = e.target.closest('.note-item-selector');
-            if (!item) return;
-            if (e.target.closest('.delete-note-btn')) { e.stopPropagation(); deleteNote(item.dataset.noteId); }
-            else { loadNoteContent(item.dataset.noteId, personalEditor, personalHistory); document.querySelector('.nav-item[data-page="personal-notes-page"]').click(); }
-        });
-
-        document.getElementById('btn-daily-note').addEventListener('click', async () => {
-            const dateString = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            const dailyNoteIdentifier = `<h1>Catatan Harian: ${dateString}</h1>`;
-            const existingNote = userNotesCache.find(note => note.content.includes(dailyNoteIdentifier));
-            if (existingNote) { await loadNoteContent(existingNote.id, personalEditor, personalHistory); showToast(`Membuka catatan untuk ${dateString}`); }
-            else { currentEditingNoteId = null; personalEditor.innerHTML = `${dailyNoteIdentifier}<p><br></p>`; personalHistory.init(); personalEditor.focus(); showToast(`Membuat catatan baru untuk ${dateString}`); }
-            generateRuler(personalEditorWrapper);
-        });
-        
-        loadServerNote(serverHistory);
-        loadNotesList();
+    async function initializeApp() { /* ... (tidak berubah) ... */
+        loggedInUser=JSON.parse(localStorage.getItem("loggedInUser"));if(!loggedInUser)return;const personalEditor=document.getElementById("note-editor"),personalToolbar=document.getElementById("personal-toolbar"),personalImageInput=document.getElementById("image-input"),personalHistory=new EditorHistory(personalEditor);initializeEditor(personalEditor,personalToolbar,personalImageInput,personalHistory);const personalEditorWrapper=document.getElementById("personal-editor-wrapper"),debouncedPersonalRulerUpdate=debounce(()=>generateRuler(personalEditorWrapper),150),personalResizeObserver=new ResizeObserver(debouncedPersonalRulerUpdate);personalResizeObserver.observe(personalEditor);debouncedPersonalRulerUpdate();const serverEditor=document.getElementById("server-note-content");let serverHistory=null;if(loggedInUser.role==="admin"){const serverToolbar=document.getElementById("server-toolbar"),serverImageInput=document.getElementById("server-image-input");serverHistory=new EditorHistory(serverEditor);initializeEditor(serverEditor,serverToolbar,serverImageInput,serverHistory);document.getElementById("save-server-note-btn").addEventListener("click",saveServerNote);const serverEditorWrapper=document.getElementById("server-editor-wrapper"),debouncedServerRulerUpdate=debounce(()=>generateRuler(serverEditorWrapper),150),serverResizeObserver=new ResizeObserver(debouncedServerRulerUpdate);serverResizeObserver.observe(serverEditor)}
+        document.getElementById("save-note-btn").addEventListener("click",savePersonalNote);document.getElementById("btn-new-note").addEventListener("click",()=>{currentEditingNoteId=null;personalEditor.innerHTML="";personalHistory.init();personalEditor.focus();generateRuler(personalEditorWrapper)});document.getElementById("notes-list-container").addEventListener("click",e=>{const item=e.target.closest(".note-item-selector");if(!item)return;if(e.target.closest(".delete-note-btn")){e.stopPropagation();deleteNote(item.dataset.noteId)}else{loadNoteContent(item.dataset.noteId,personalEditor,personalHistory);document.querySelector('.nav-item[data-page="personal-notes-page"]').click()}});document.getElementById("btn-daily-note").addEventListener("click",async()=>{const dateString=(new Date).toLocaleDateString("id-ID",{weekday:"long",year:"numeric",month:"long",day:"numeric"}),dailyNoteIdentifier=`<h1>Catatan Harian: ${dateString}</h1>`,existingNote=userNotesCache.find(note=>note.content.includes(dailyNoteIdentifier));if(existingNote){await loadNoteContent(existingNote.id,personalEditor,personalHistory);showToast(`Membuka catatan untuk ${dateString}`)}else{currentEditingNoteId=null;personalEditor.innerHTML=`${dailyNoteIdentifier}<p><br></p>`;personalHistory.init();personalEditor.focus();showToast(`Membuat catatan baru untuk ${dateString}`)}
+        generateRuler(personalEditorWrapper)});await loadServerNote(serverHistory);await loadNotesList();
     }
     
-    // ================== KODE DARI: dashboard.js ==================
-    function main() {
-        loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-        if (!loggedInUser) {
-            document.getElementById('auth-wrapper').style.display = 'block';
-            document.getElementById('app-container').style.display = 'none';
-
-            const showLoginBtn = document.getElementById('show-login');
-            const showRegisterBtn = document.getElementById('show-register');
-            const loginView = document.getElementById('login-view');
-            const registerView = document.getElementById('register-view');
-
-            showRegisterBtn.addEventListener('click', () => { loginView.style.display = 'none'; registerView.style.display = 'block'; });
-            showLoginBtn.addEventListener('click', () => { registerView.style.display = 'none'; loginView.style.display = 'block'; });
-            
-            const loginForm = document.getElementById('login-form');
-            if (loginForm) {
-                loginForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const username = document.getElementById('username').value.trim(); const password = document.getElementById('password').value;
-                    if (!username || !password) return showToast('User ID dan Password tidak boleh kosong!', 'error');
-                    const db = await readBin(DATA_USER_BIN_ID);
-                    const user = (db.data_user || []).find(u => u.username === username && u.password === password);
-                    if (user) {
-                        localStorage.setItem('loggedInUser', JSON.stringify({ id: user.id, username: user.username, role: user.role }));
-                        showToast(`Selamat datang kembali, ${user.username}!`);
-                        document.body.classList.add('page-fade-out');
-                        setTimeout(() => window.location.reload(), 300);
-                    } else { showToast('User ID atau Password salah.', 'error'); }
-                });
-            }
-            const registerForm = document.getElementById('register-form');
-            if (registerForm) {
-                registerForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const username = document.getElementById('new-username').value.trim(); const password = document.getElementById('new-password').value;
-                    if (!username || !password) return showToast('User ID dan Password tidak boleh kosong!', 'error');
-                    let db = await readBin(DATA_USER_BIN_ID);
-                    const userList = db.data_user || [];
-                    if (userList.some(user => user.username === username)) return showToast('User ID sudah digunakan.', 'error');
-                    userList.push({ id: `user_${Date.now()}`, username, password, role: 'user' });
-                    const result = await updateBin(DATA_USER_BIN_ID, { data_user: userList });
-                    if (result) { showToast('Akun berhasil dibuat! Silakan login.'); showLoginBtn.click(); }
-                });
-            }
-
-        } else {
-            document.getElementById('auth-wrapper').style.display = 'none';
-            document.getElementById('app-container').style.display = 'flex';
-            
-            const pages = document.querySelectorAll('.app-page');
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    const pageId = e.currentTarget.dataset.page;
-                    if (pageId) {
-                        pages.forEach(page => page.classList.remove('active-page'));
-                        document.getElementById(pageId).classList.add('active-page');
-                        navItems.forEach(nav => nav.classList.remove('active'));
-                        e.currentTarget.classList.add('active');
-                    }
-                });
-            });
-
-            document.getElementById('logout-btn-nav').addEventListener('click', async () => {
-                if (await showConfirm('Konfirmasi Logout', 'Anda yakin ingin keluar dari sesi ini?')) {
-                    localStorage.removeItem('loggedInUser');
-                    document.body.classList.add('page-fade-out');
-                    setTimeout(() => window.location.reload(), 300);
-                }
-            });
-
-            const taskFilterBtn = document.getElementById('task-filter-btn');
-            taskFilterBtn.addEventListener('click', () => {
-                const listContainer = document.getElementById('notes-list-container');
-                listContainer.classList.toggle('notes-filtered'); taskFilterBtn.classList.toggle('active');
-                showToast(listContainer.classList.contains('notes-filtered') ? 'Menyembunyikan catatan dengan tugas selesai' : 'Menampilkan semua catatan');
-            });
-
-            document.getElementById('search-notes-input').addEventListener('input', debounce(filterAndRenderNotesList, 300));
-
-            if (loggedInUser.role === 'admin') {
-                document.getElementById('server-note-content').contentEditable = true;
-                document.getElementById('server-header-actions').style.display = 'flex';
-                document.getElementById('server-toolbar').style.display = 'flex';
-                document.getElementById('server-editor-wrapper').classList.add('ruler-active');
-            } else {
-                const serverEditorWrapper = document.getElementById('server-editor-wrapper');
-                if (serverEditorWrapper) serverEditorWrapper.classList.remove('ruler-active');
-                
-                const serverNoteContainer = document.getElementById('server-note-content');
-                if(serverNoteContainer){
-                    serverNoteContainer.addEventListener('beforeinput', e => {
-                        e.preventDefault();
-                    });
-                }
-            }
-            
-            initializeApp();
-        }
+    async function main() { /* ... (sudah disesuaikan dengan API GitHub) ... */
+        loggedInUser=JSON.parse(localStorage.getItem("loggedInUser"));if(!loggedInUser){document.getElementById("auth-wrapper").style.display="block";document.getElementById("app-container").style.display="none";const showLoginBtn=document.getElementById("show-login"),showRegisterBtn=document.getElementById("show-register"),loginView=document.getElementById("login-view"),registerView=document.getElementById("register-view");showRegisterBtn.addEventListener("click",()=>{loginView.style.display="none";registerView.style.display="block"});showLoginBtn.addEventListener("click",()=>{registerView.style.display="none";loginView.style.display="block"});const loginForm=document.getElementById("login-form");if(loginForm){loginForm.addEventListener("submit",async e=>{e.preventDefault();const username=document.getElementById("username").value.trim(),password=document.getElementById("password").value;if(!username||!password)return showToast("User ID dan Password tidak boleh kosong!","error");const db=await readFile(DATA_USER_FILE_ID);if(!db)return;const user=(db.data_user||[]).find(u=>u.username===username&&u.password===password);if(user){localStorage.setItem("loggedInUser",JSON.stringify({id:user.id,username:user.username,role:user.role}));showToast(`Selamat datang kembali, ${user.username}!`);document.body.classList.add("page-fade-out");setTimeout(()=>window.location.reload(),300)}else showToast("User ID atau Password salah.","error")})}
+        const registerForm=document.getElementById("register-form");if(registerForm){registerForm.addEventListener("submit",async e=>{e.preventDefault();const username=document.getElementById("new-username").value.trim(),password=document.getElementById("new-password").value;if(!username||!password)return showToast("User ID dan Password tidak boleh kosong!","error");let db=await readFile(DATA_USER_FILE_ID);if(!db)return;const userList=db.data_user||[];if(userList.some(user=>user.username===username))return showToast("User ID sudah digunakan.","error");userList.push({id:`user_${Date.now()}`,username:username,password:password,role:"user"});const result=await updateFile(DATA_USER_FILE_ID,{data_user:userList});if(result){showToast("Akun berhasil dibuat! Silakan login.");showLoginBtn.click()}})}}else{document.getElementById("auth-wrapper").style.display="none";document.getElementById("app-container").style.display="flex";const pages=document.querySelectorAll(".app-page"),navItems=document.querySelectorAll(".nav-item");navItems.forEach(item=>{item.addEventListener("click",e=>{const pageId=e.currentTarget.dataset.page;if(pageId){pages.forEach(page=>page.classList.remove("active-page"));document.getElementById(pageId).classList.add("active-page");navItems.forEach(nav=>nav.classList.remove("active"));e.currentTarget.classList.add("active")}})});
+        document.getElementById("logout-btn-nav").addEventListener("click",async()=>{if(await showConfirm("Konfirmasi Logout","Anda yakin ingin keluar dari sesi ini?")){localStorage.removeItem("loggedInUser");document.body.classList.add("page-fade-out");setTimeout(()=>window.location.reload(),300)}});const taskFilterBtn=document.getElementById("task-filter-btn");taskFilterBtn.addEventListener("click",()=>{const listContainer=document.getElementById("notes-list-container");listContainer.classList.toggle("notes-filtered");taskFilterBtn.classList.toggle("active");showToast(listContainer.classList.contains("notes-filtered")?"Menyembunyikan catatan dengan tugas selesai":"Menampilkan semua catatan")});document.getElementById("search-notes-input").addEventListener("input",debounce(filterAndRenderNotesList,300));if(loggedInUser.role==="admin"){document.getElementById("server-note-content").contentEditable=true;document.getElementById("server-header-actions").style.display="flex";document.getElementById("server-toolbar").style.display="flex";document.getElementById("server-editor-wrapper").classList.add("ruler-active")}else{const serverEditorWrapper=document.getElementById("server-editor-wrapper");if(serverEditorWrapper)serverEditorWrapper.classList.remove("ruler-active");const serverNoteContainer=document.getElementById("server-note-content");if(serverNoteContainer){serverNoteContainer.addEventListener("beforeinput",e=>{e.preventDefault()})}}
+        await initializeApp()}
     }
     
     document.addEventListener('DOMContentLoaded', main);
