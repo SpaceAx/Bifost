@@ -7,5 +7,26 @@
       "content": "Hitam"
     }
   ],
-  "tugas": []
+  "tugas": [],
+  "polls": [
+    {
+      "id": "poll_1754845325026",
+      "question": "Kamu mau apa",
+      "type": "single",
+      "creatorId": "admin",
+      "createdAt": 1754845325026,
+      "options": [
+        {
+          "id": "option_1",
+          "text": "Tidur",
+          "votes": []
+        },
+        {
+          "id": "option_2",
+          "text": "Makan",
+          "votes": []
+        }
+      ]
+    }
+  ]
 }
