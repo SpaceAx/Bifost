@@ -2,7 +2,12 @@
   "user": [
     {
       "userId": "user_1754374673773",
-      "notes": []
+      "notes": [
+        {
+          "id": "note_1754842303941",
+          "content": "Jz"
+        }
+      ]
     },
     {
       "userId": "user_1754455166327",
