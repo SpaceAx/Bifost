@@ -19,7 +19,9 @@
         {
           "id": "option_1",
           "text": "Tidur",
-          "votes": []
+          "votes": [
+            "user_1754374673773"
+          ]
         },
         {
           "id": "option_2",
