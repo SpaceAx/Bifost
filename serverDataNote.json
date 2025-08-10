@@ -24,7 +24,9 @@
         {
           "id": "option_2",
           "text": "Makan",
-          "votes": []
+          "votes": [
+            "admin"
+          ]
         }
       ]
     }
