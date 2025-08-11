@@ -1,3 +1,13 @@
 {
-  "user": []
+  "user": [
+    {
+      "userId": "admin",
+      "notes": [
+        {
+          "id": "note_1754881260612",
+          "content": "Labubu"
+        }
+      ]
+    }
+  ]
 }
