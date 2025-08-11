@@ -15,7 +15,12 @@
     },
     {
       "userId": "admin",
-      "notes": []
+      "notes": [
+        {
+          "id": "note_1754877759633",
+          "content": "Hai"
+        }
+      ]
     }
   ]
 }
