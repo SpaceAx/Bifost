@@ -1,1 +1,25 @@
-{}
+{
+  "polls": [
+    {
+      "id": "poll_1754878483766",
+      "question": "Apalah",
+      "type": "single",
+      "creatorId": "admin",
+      "createdAt": 1754878483766,
+      "options": [
+        {
+          "id": "option_1",
+          "text": "Hx",
+          "imageUrl": null,
+          "votes": []
+        },
+        {
+          "id": "option_2",
+          "text": "Dh",
+          "imageUrl": null,
+          "votes": []
+        }
+      ]
+    }
+  ]
+}
