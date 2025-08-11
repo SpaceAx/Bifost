@@ -1,21 +1,3 @@
 {
-  "user": [
-    {
-      "userId": "user_1754374673773",
-      "notes": [
-        {
-          "id": "note_1754844731854",
-          "content": "<h1>Labubu ta iki</h1>Apalah"
-        }
-      ]
-    },
-    {
-      "userId": "user_1754455166327",
-      "notes": []
-    },
-    {
-      "userId": "admin",
-      "notes": []
-    }
-  ]
+  "user": []
 }
