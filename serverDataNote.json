@@ -11,7 +11,9 @@
           "id": "option_1",
           "text": "Hx",
           "imageUrl": null,
-          "votes": []
+          "votes": [
+            "admin"
+          ]
         },
         {
           "id": "option_2",
