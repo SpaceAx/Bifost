@@ -2,12 +2,7 @@
   "user": [
     {
       "userId": "admin",
-      "notes": [
-        {
-          "id": "note_1754881260612",
-          "content": "<h1>Woi</h1>Labubu"
-        }
-      ]
+      "notes": []
     }
   ]
 }
