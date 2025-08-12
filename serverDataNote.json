@@ -1,5 +1,11 @@
 {
   "polls": [],
-  "jadwal": [],
+  "jadwal": [
+    {
+      "id": "jadwal_1754962799132",
+      "title": "bima",
+      "content": "Tes"
+    }
+  ],
   "tugas": []
 }
