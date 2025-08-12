@@ -19,6 +19,13 @@
       "password": "RAHASIA1",
       "role": "user",
       "avatar": null
+    },
+    {
+      "id": "user_1755010598729",
+      "username": "123456",
+      "password": "654321",
+      "role": "user",
+      "avatar": null
     }
   ]
 }
