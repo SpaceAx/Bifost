@@ -12,6 +12,13 @@
       "password": "tes1234",
       "role": "user",
       "avatar": null
+    },
+    {
+      "id": "user_1754962860259",
+      "username": "fonabima",
+      "password": "RAHASIA1",
+      "role": "user",
+      "avatar": null
     }
   ]
 }
