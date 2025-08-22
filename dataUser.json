@@ -26,6 +26,13 @@
       "password": "654321",
       "role": "user",
       "avatar": null
+    },
+    {
+      "id": "user_1755835610236",
+      "username": "Thomas",
+      "password": "pppp",
+      "role": "user",
+      "avatar": null
     }
   ]
 }
