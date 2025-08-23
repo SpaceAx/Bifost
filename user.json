@@ -16,6 +16,15 @@
     {
       "userId": "user_1755835610236",
       "notes": []
+    },
+    {
+      "userId": "operator",
+      "notes": [
+        {
+          "id": "note_1755928721340",
+          "content": "Hai"
+        }
+      ]
     }
   ]
 }
