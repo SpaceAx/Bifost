@@ -19,7 +19,12 @@
     },
     {
       "userId": "operator",
-      "notes": []
+      "notes": [
+        {
+          "id": "note_1755943461289",
+          "content": "Hai"
+        }
+      ]
     }
   ]
 }
