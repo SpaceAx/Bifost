@@ -1,11 +1,5 @@
 {
   "polls": [],
-  "jadwal": [
-    {
-      "id": "jadwal_1755835565631",
-      "title": "Tes",
-      "content": "g"
-    }
-  ],
+  "jadwal": [],
   "tugas": []
 }
