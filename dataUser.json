@@ -1,6 +1,12 @@
 {
   "data_user": [
     {
+      "id": "operator",
+      "username": "operator",
+      "password": "operator 1436",
+      "role": "operator"
+    },
+    {
       "id": "admin",
       "username": "admin",
       "password": "pelajarhebat",
