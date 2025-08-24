@@ -20,14 +20,7 @@
     {
       "userId": "operator",
       "notes": [],
-      "notesTree": [
-        {
-          "id": "note_1756051017324",
-          "type": "note",
-          "name": "Hai",
-          "content": "<h1>Hai</h1><p><br></p>"
-        }
-      ]
+      "notesTree": []
     }
   ]
 }
