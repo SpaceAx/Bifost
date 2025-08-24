@@ -26,6 +26,13 @@
           "type": "note",
           "name": "Hai",
           "content": "<h1>Hai</h1><p><br></p>"
+        },
+        {
+          "id": "folder_1756051024434",
+          "type": "folder",
+          "name": "P",
+          "children": [],
+          "collapsed": false
         }
       ]
     }
