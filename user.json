@@ -20,7 +20,15 @@
     {
       "userId": "operator",
       "notes": [],
-      "notesTree": []
+      "notesTree": [
+        {
+          "id": "folder_1756051657937",
+          "type": "folder",
+          "name": "Hai",
+          "children": [],
+          "collapsed": false
+        }
+      ]
     }
   ]
 }
