@@ -5,6 +5,13 @@
       "username": "admin",
       "password": "pelajarhebat",
       "role": "admin"
+    },
+    {
+      "id": "user_1756360429283",
+      "username": "Tes",
+      "password": "12",
+      "role": "user",
+      "avatar": null
     }
   ]
 }
