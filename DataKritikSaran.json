@@ -1,3 +1,9 @@
 {
-  "data_kritikSaran": []
+  "data_kritikSaran": [
+    {
+      "nama": "Tes",
+      "saran": "Hai",
+      "timestamp": "2025-09-23T11:06:49.294Z"
+    }
+  ]
 }
