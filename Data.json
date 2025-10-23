@@ -1,7 +1,7 @@
 {
-  "message_id": "msg001",
-  "sender": "SpaceAx",
+  "message_id": "msg000",
+  "sender": "System",
   "text": "Selamat datang di sistem komunikasi Arduino R4 WiFi!",
-  "timestamp": "2025-10-23T10:55:00+07:00",
+  "timestamp": "2025-10-23T11:10:00+07:00",
   "status": "active"
 }
