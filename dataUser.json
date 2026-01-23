@@ -12,6 +12,13 @@
       "password": "123",
       "role": "user",
       "avatar": null
+    },
+    {
+      "id": "user_1769139386165",
+      "username": "tes",
+      "password": "tes",
+      "role": "user",
+      "avatar": null
     }
   ]
 }
