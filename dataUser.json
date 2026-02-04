@@ -26,6 +26,14 @@
       "password": "op",
       "role": "user",
       "avatar": null
+    },
+    {
+      "id": "user_1770212897237",
+      "username": "hai",
+      "password": "hai",
+      "role": "operator",
+      "avatar": null,
+      "lastActive": null
     }
   ]
 }
