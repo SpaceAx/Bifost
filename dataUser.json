@@ -19,6 +19,13 @@
       "password": "tes",
       "role": "user",
       "avatar": null
+    },
+    {
+      "id": "user_1770212756313",
+      "username": "op",
+      "password": "op",
+      "role": "user",
+      "avatar": null
     }
   ]
 }
