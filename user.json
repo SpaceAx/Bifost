@@ -2,7 +2,12 @@
   "user": [
     {
       "userId": "operator",
-      "notes": []
+      "notes": [
+        {
+          "id": "note_1778215430694",
+          "content": "P"
+        }
+      ]
     }
   ]
 }
